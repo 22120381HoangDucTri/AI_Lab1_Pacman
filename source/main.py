@@ -1,9 +1,8 @@
+import argparse
+import os
 from utils import load_map_from_file, measure_performance
 from algorithms import bfs, dfs, ucs, astar
 from visualizer import visualize
-
-
-MAP_FILE_PATH = "maps/map1.txt"  # Đường dẫn đến file bản đồ
 
 
 def run_algorithm(name, func, grid, start, goal):
@@ -28,8 +27,15 @@ def run_algorithm(name, func, grid, start, goal):
     }
 
 def main():
+    # Chỉ định map với cmd arg --map
+    parser = argparse.ArgumentParser(description="Pac-Man AI - Multi-Ghost Search")
+    parser.add_argument("--map", type=str, default="maps/map2.txt", help="Đường dẫn tới file bản đồ .txt")
+    args = parser.parse_args()
+
+    map_path = args.map
+
     # Load bản đồ và vị trí nhân vật
-    grid, pacman_pos, ghost_positions, _ = load_map_from_file(MAP_FILE_PATH)
+    grid, pacman_pos, ghost_positions, _ = load_map_from_file(map_path)
 
     # Kiểm tra có ghost không
     if not ghost_positions:
@@ -40,7 +46,7 @@ def main():
     goal = pacman_pos           # Vị trí Pac-Man
 
     print(f"Ghost {start} -> Pacman {goal}")
-    print(f"Map: {MAP_FILE_PATH}")
+    print(f"Map: {map_path}")
 
     # Đo hiệu suất và thực hiện thuật toán
     results = []
